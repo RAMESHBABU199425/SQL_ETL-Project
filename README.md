@@ -87,3 +87,27 @@ select trans_date, sum(amount) total_cr_dr from cleaned_finance_ETL
 Group by trans_date
 Select Distinct Category
 from Sales_data
+--Group by branch and show total CREDIT amount per branch.
+select Branch_code,sum(amount) Total_amt_cr_branch from cleaned_Finance_ETL
+Where trans_type='Credit'
+Group by Branch_code
+--Find the number of ATM WITHDRAWAL transactions.
+Select Count(*) No_of_ATM_WITh from Cleaned_Finance_ETL
+Where Remarks='ATM WIthdrawl' or Remarks like 'ATM %'
+--Display all transactions where remarks contain "PAYMENT".
+Select *from Cleaned_Finance_ETL
+Where Remarks like '%Payment%'
+/*Show amount range:
+Less than 5,000
+Between 5,000 and 20,000
+Above 20,000*/
+select Amount,
+case 
+when amount<=5000 then 'low'
+when amount<20000 then 'medium'
+when amount>20000 then 'high'
+end as Range
+from Cleaned_Finance_ETL
+--Find customers who have both CREDIT and DEBIT transactions.
+Select Customer_name,Trans_type from Cleaned_Finance_ETL
+where trans_type In('Credit','debit')
